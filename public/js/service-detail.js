@@ -3,12 +3,15 @@
  */
 
 document.addEventListener('DOMContentLoaded', async () => {
-  const container = document.querySelector('#service-detail-app');
+  const container = document.querySelector('#service-detail-root') || document.querySelector('#service-detail-app');
   if (!container) return;
 
-  // Extract slug from path (/services/:slug)
+  // Extract slug from URL query or path (/services/:slug)
+  const urlParams = new URLSearchParams(window.location.search);
+  const querySlug = urlParams.get('slug') || urlParams.get('id');
   const pathParts = window.location.pathname.split('/').filter(Boolean);
-  const slug = pathParts[pathParts.length - 1] || 'professional-deep-home-cleaning';
+  const pathSlug = pathParts[pathParts.length - 1];
+  const slug = querySlug || (pathSlug && pathSlug !== 'service' && pathSlug !== 'service.html' && pathSlug !== 'service-detail.html' ? pathSlug : '') || 'sample-deep-home-cleaning-sanitization';
 
   try {
     const res = await API.getServiceDetail(slug);
