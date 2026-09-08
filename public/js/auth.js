@@ -82,13 +82,29 @@ const Auth = {
   },
 
   loadClerkSDK(publishableKey) {
-    if (window.Clerk) return Promise.resolve();
+    if (window.Clerk && window.Clerk.load) return Promise.resolve();
     return new Promise((resolve, reject) => {
+      let frontendApi = '';
+      try {
+        const parts = publishableKey.split('_');
+        if (parts[2]) {
+          frontendApi = atob(parts[2]).replace('$', '');
+        }
+      } catch (_) {}
+
       const script = document.createElement('script');
       script.setAttribute('data-clerk-publishable-key', publishableKey);
-      script.src = 'https://cdn.jsdelivr.net/npm/@clerk/clerk-js@latest/dist/clerk.browser.js';
+      script.src = frontendApi 
+        ? `https://${frontendApi}/npm/@clerk/clerk-js@latest/dist/clerk.browser.js` 
+        : 'https://cdn.jsdelivr.net/npm/@clerk/clerk-js@latest/dist/clerk.browser.js';
       script.async = true;
-      script.onload = () => resolve();
+      script.crossOrigin = 'anonymous';
+      script.onload = () => {
+        if (typeof window.Clerk === 'function') {
+          window.Clerk = new window.Clerk(publishableKey);
+        }
+        resolve();
+      };
       script.onerror = (e) => reject(e);
       document.head.appendChild(script);
     });
@@ -124,16 +140,29 @@ const Auth = {
   },
 
   async signInWithGoogle(redirectUrl = '/') {
+    const origin = window.location.origin;
+    const fullRedirectUrl = origin + '/sso-callback';
+    const fullCompleteUrl = origin + (redirectUrl.startsWith('/') ? redirectUrl : '/' + redirectUrl);
+
     if (this.isClerkActive && window.Clerk) {
       try {
-        await window.Clerk.authenticateWithRedirect({
-          strategy: 'oauth_google',
-          redirectUrl: '/sso-callback',
-          redirectUrlComplete: redirectUrl
-        });
-        return;
+        if (window.Clerk.client?.signIn?.authenticateWithRedirect) {
+          await window.Clerk.client.signIn.authenticateWithRedirect({
+            strategy: 'oauth_google',
+            redirectUrl: fullRedirectUrl,
+            redirectUrlComplete: fullCompleteUrl
+          });
+          return;
+        } else if (window.Clerk.authenticateWithRedirect) {
+          await window.Clerk.authenticateWithRedirect({
+            strategy: 'oauth_google',
+            redirectUrl: fullRedirectUrl,
+            redirectUrlComplete: fullCompleteUrl
+          });
+          return;
+        }
       } catch (e) {
-        console.warn('Clerk Google OAuth redirect error, falling back:', e);
+        console.error('Clerk Google OAuth redirect error:', e);
       }
     }
     // Demo fallback
@@ -142,24 +171,38 @@ const Auth = {
   },
 
   async signUpWithGoogle(role = 'customer') {
+    const origin = window.location.origin;
+    const fullRedirectUrl = origin + '/sso-callback';
+    const targetPath = role === 'provider' ? '/provider/dashboard' : '/';
+    const fullCompleteUrl = origin + targetPath;
+
     localStorage.setItem('fixit_pending_role', role);
     localStorage.setItem('fixit_role', role);
 
     if (this.isClerkActive && window.Clerk) {
       try {
-        await window.Clerk.authenticateWithRedirect({
-          strategy: 'oauth_google',
-          redirectUrl: '/sso-callback',
-          redirectUrlComplete: role === 'provider' ? '/provider/dashboard' : '/'
-        });
-        return;
+        if (window.Clerk.client?.signUp?.authenticateWithRedirect) {
+          await window.Clerk.client.signUp.authenticateWithRedirect({
+            strategy: 'oauth_google',
+            redirectUrl: fullRedirectUrl,
+            redirectUrlComplete: fullCompleteUrl
+          });
+          return;
+        } else if (window.Clerk.authenticateWithRedirect) {
+          await window.Clerk.authenticateWithRedirect({
+            strategy: 'oauth_google',
+            redirectUrl: fullRedirectUrl,
+            redirectUrlComplete: fullCompleteUrl
+          });
+          return;
+        }
       } catch (e) {
-        console.warn('Clerk Google OAuth redirect error, falling back:', e);
+        console.error('Clerk Google OAuth redirect error:', e);
       }
     }
     // Demo fallback
     await this.loginDemo(role);
-    window.location.href = role === 'provider' ? '/provider/dashboard' : '/';
+    window.location.href = targetPath;
   },
 
   async signInWithEmail(email, password) {
