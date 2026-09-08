@@ -192,36 +192,41 @@
           : '<i class="fa-regular fa-eye"></i>';
       });
 
-      // Google 1-Click Simulation
-      document.querySelector('#btn-google-signup')?.addEventListener('click', () => {
+      // Google 1-Click / Real OAuth
+      document.querySelector('#btn-google-signup')?.addEventListener('click', async () => {
         const role = providerRadio.checked ? 'provider' : 'customer';
-        Auth.loginDemo(role).then(() => {
-          window.location.href = role === 'provider' ? '/provider/dashboard' : '/';
-        });
+        const btn = document.querySelector('#btn-google-signup');
+        const origHtml = btn.innerHTML;
+        btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Connecting to Google...';
+        btn.disabled = true;
+        try {
+          await Auth.signUpWithGoogle(role);
+        } catch (err) {
+          console.error(err);
+          btn.innerHTML = origHtml;
+          btn.disabled = false;
+        }
       });
 
       // Email Sign up form
-      document.querySelector('#signup-form')?.addEventListener('submit', (e) => {
+      document.querySelector('#signup-form')?.addEventListener('submit', async (e) => {
         e.preventDefault();
         const name = document.querySelector('#signup-name').value.trim();
         const email = document.querySelector('#signup-email').value.trim();
+        const password = document.querySelector('#signup-password').value;
         const role = providerRadio.checked ? 'provider' : 'customer';
+        const submitBtn = document.querySelector('#btn-submit-signup');
+        const origHtml = submitBtn.innerHTML;
+        submitBtn.innerHTML = '<span>Creating Account...</span> <i class="fa-solid fa-circle-notch fa-spin"></i>';
+        submitBtn.disabled = true;
 
-        Auth.user = {
-          id: 'usr_' + Date.now(),
-          fullName: name,
-          primaryEmail: email,
-          imageUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
-          role: role
-        };
-
-        localStorage.setItem('fixit_local_user', JSON.stringify(Auth.user));
-        localStorage.setItem('fixit_role', role);
-
-        if (role === 'provider') {
-          window.location.href = '/provider/dashboard';
-        } else {
-          window.location.href = '/';
+        try {
+          await Auth.signUpWithEmail(name, email, password, role);
+        } catch (err) {
+          console.error(err);
+        } finally {
+          submitBtn.innerHTML = origHtml;
+          submitBtn.disabled = false;
         }
       });
     });

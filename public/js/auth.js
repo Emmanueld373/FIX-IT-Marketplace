@@ -1,36 +1,73 @@
 /**
  * Fix-it Marketplace — Auth Client
- * Seamlessly integrates Clerk SDK and provides offline/demo user mode fallback.
+ * Full production integration with Clerk SDK (Google OAuth & Email) with resilient offline/demo fallback.
  */
 
 const Auth = {
   user: null,
   isLoaded: false,
+  isClerkActive: false,
   callbacks: [],
 
   async init() {
-    // Check if Clerk publishable key is available
-    const publishableKey = window.CLERK_PUBLISHABLE_KEY || 'pk_test_your_publishable_key_here';
+    let publishableKey = window.CLERK_PUBLISHABLE_KEY || '';
 
-    if (window.Clerk && publishableKey && !publishableKey.includes('your_publishable_key')) {
+    // Fetch config from server if not hardcoded on window
+    if (!publishableKey) {
       try {
-        await window.Clerk.load();
-        if (window.Clerk.user) {
-          this.user = {
-            id: window.Clerk.user.id,
-            fullName: window.Clerk.user.fullName || window.Clerk.user.firstName || 'User',
-            primaryEmail: window.Clerk.user.primaryEmailAddress?.emailAddress || '',
-            imageUrl: window.Clerk.user.imageUrl || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
-            role: window.Clerk.user.unsafeMetadata?.role || localStorage.getItem('fixit_role') || 'customer',
-            isAdmin: window.Clerk.user.publicMetadata?.role === 'admin',
-          };
+        const res = await fetch('/api/config');
+        if (res.ok) {
+          const config = await res.json();
+          if (config.clerkPublishableKey) {
+            publishableKey = config.clerkPublishableKey;
+            window.CLERK_PUBLISHABLE_KEY = publishableKey;
+          }
+        }
+      } catch (_) {}
+    }
+
+    // If valid Clerk key exists, initialize Clerk JS SDK
+    if (publishableKey && !publishableKey.includes('your_publishable_key')) {
+      try {
+        await this.loadClerkSDK(publishableKey);
+        if (window.Clerk) {
+          await window.Clerk.load();
+          this.isClerkActive = true;
+
+          if (window.Clerk.user) {
+            this.user = {
+              id: window.Clerk.user.id,
+              fullName: window.Clerk.user.fullName || window.Clerk.user.firstName || 'User',
+              primaryEmail: window.Clerk.user.primaryEmailAddress?.emailAddress || '',
+              imageUrl: window.Clerk.user.imageUrl || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
+              role: window.Clerk.user.unsafeMetadata?.role || localStorage.getItem('fixit_role') || 'customer',
+              isAdmin: window.Clerk.user.publicMetadata?.role === 'admin'
+            };
+          }
+
+          // Listen for Clerk auth state changes
+          window.Clerk.addListener(({ user }) => {
+            if (user) {
+              this.user = {
+                id: user.id,
+                fullName: user.fullName || user.firstName || 'User',
+                primaryEmail: user.primaryEmailAddress?.emailAddress || '',
+                imageUrl: user.imageUrl || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
+                role: user.unsafeMetadata?.role || localStorage.getItem('fixit_role') || 'customer',
+                isAdmin: user.publicMetadata?.role === 'admin'
+              };
+            } else if (this.isClerkActive) {
+              this.user = null;
+            }
+            this.notifyListeners();
+          });
         }
       } catch (e) {
-        console.warn('Clerk initialization notice:', e);
+        console.warn('Clerk SDK initialization notice:', e);
       }
     }
 
-    // Fallback: Check local storage for session state
+    // Fallback: Check local storage for session state if Clerk is not active or user not logged in
     if (!this.user) {
       const savedUser = localStorage.getItem('fixit_local_user');
       if (savedUser) {
@@ -42,6 +79,19 @@ const Auth = {
 
     this.isLoaded = true;
     this.notifyListeners();
+  },
+
+  loadClerkSDK(publishableKey) {
+    if (window.Clerk) return Promise.resolve();
+    return new Promise((resolve, reject) => {
+      const script = document.createElement('script');
+      script.setAttribute('data-clerk-publishable-key', publishableKey);
+      script.src = 'https://cdn.jsdelivr.net/npm/@clerk/clerk-js@latest/dist/clerk.browser.js';
+      script.async = true;
+      script.onload = () => resolve();
+      script.onerror = (e) => reject(e);
+      document.head.appendChild(script);
+    });
   },
 
   onStateChange(cb) {
@@ -73,24 +123,128 @@ const Auth = {
     return Boolean(this.user.isAdmin || localStorage.getItem('fixit_role') === 'admin');
   },
 
-  async becomeProvider(name) {
-    if (!this.user) {
-      this.user = {
-        id: 'user_prov_' + Date.now(),
-        fullName: name || 'Artisan Provider',
-        primaryEmail: 'provider@fixit.gh',
-        imageUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80',
-        role: 'provider',
-        isAdmin: false
-      };
-    } else {
-      this.user.role = 'provider';
-      if (name) this.user.fullName = name;
+  async signInWithGoogle(redirectUrl = '/') {
+    if (this.isClerkActive && window.Clerk) {
+      try {
+        await window.Clerk.authenticateWithRedirect({
+          strategy: 'oauth_google',
+          redirectUrl: '/sso-callback',
+          redirectUrlComplete: redirectUrl
+        });
+        return;
+      } catch (e) {
+        console.warn('Clerk Google OAuth redirect error, falling back:', e);
+      }
     }
-    localStorage.setItem('fixit_role', 'provider');
+    // Demo fallback
+    await this.loginDemo('customer');
+    window.location.href = redirectUrl;
+  },
+
+  async signUpWithGoogle(role = 'customer') {
+    localStorage.setItem('fixit_pending_role', role);
+    localStorage.setItem('fixit_role', role);
+
+    if (this.isClerkActive && window.Clerk) {
+      try {
+        await window.Clerk.authenticateWithRedirect({
+          strategy: 'oauth_google',
+          redirectUrl: '/sso-callback',
+          redirectUrlComplete: role === 'provider' ? '/provider/dashboard' : '/'
+        });
+        return;
+      } catch (e) {
+        console.warn('Clerk Google OAuth redirect error, falling back:', e);
+      }
+    }
+    // Demo fallback
+    await this.loginDemo(role);
+    window.location.href = role === 'provider' ? '/provider/dashboard' : '/';
+  },
+
+  async signInWithEmail(email, password) {
+    if (this.isClerkActive && window.Clerk?.client) {
+      try {
+        const res = await window.Clerk.client.signIn.create({
+          identifier: email,
+          password: password
+        });
+        if (res.status === 'complete') {
+          await window.Clerk.setActive({ session: res.createdSessionId });
+          window.location.href = '/';
+          return;
+        }
+      } catch (err) {
+        const msg = err.errors?.[0]?.message || 'Sign in failed. Please check your credentials.';
+        alert(msg);
+        return;
+      }
+    }
+
+    // Local / Demo fallback
+    const name = email.split('@')[0].replace(/[._]/g, ' ');
+    const formattedName = name.charAt(0).toUpperCase() + name.slice(1);
+    this.user = {
+      id: 'usr_' + Date.now(),
+      fullName: formattedName,
+      primaryEmail: email,
+      imageUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
+      role: 'customer'
+    };
     localStorage.setItem('fixit_local_user', JSON.stringify(this.user));
-    this.notifyListeners();
-    return this.user;
+    window.location.href = '/';
+  },
+
+  async signUpWithEmail(fullName, email, password, role = 'customer') {
+    if (this.isClerkActive && window.Clerk?.client) {
+      try {
+        localStorage.setItem('fixit_role', role);
+        const parts = fullName.trim().split(' ');
+        const firstName = parts[0] || 'User';
+        const lastName = parts.slice(1).join(' ') || '';
+
+        const res = await window.Clerk.client.signUp.create({
+          emailAddress: email,
+          password: password,
+          firstName: firstName,
+          lastName: lastName
+        });
+
+        if (res.status === 'complete') {
+          await window.Clerk.setActive({ session: res.createdSessionId });
+          window.location.href = role === 'provider' ? '/provider/dashboard' : '/';
+          return;
+        } else {
+          // Prepare email verification if required by Clerk configuration
+          await window.Clerk.client.signUp.prepareEmailAddressVerification({ strategy: 'email_code' });
+          const code = prompt('A verification code was sent to ' + email + '. Please enter the code:');
+          if (code) {
+            const verified = await window.Clerk.client.signUp.attemptEmailAddressVerification({ code });
+            if (verified.status === 'complete') {
+              await window.Clerk.setActive({ session: verified.createdSessionId });
+              window.location.href = role === 'provider' ? '/provider/dashboard' : '/';
+              return;
+            }
+          }
+        }
+      } catch (err) {
+        const msg = err.errors?.[0]?.message || 'Failed to create account.';
+        alert(msg);
+        return;
+      }
+    }
+
+    // Local / Demo fallback
+    this.user = {
+      id: 'usr_' + Date.now(),
+      fullName: fullName,
+      primaryEmail: email,
+      imageUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
+      role: role
+    };
+    localStorage.setItem('fixit_local_user', JSON.stringify(this.user));
+    localStorage.setItem('fixit_role', role);
+    window.location.href = role === 'provider' ? '/provider/dashboard' : '/';
   },
 
   async loginDemo(role = 'customer') {
@@ -129,7 +283,7 @@ const Auth = {
   },
 
   async signOut() {
-    if (window.Clerk) {
+    if (this.isClerkActive && window.Clerk) {
       try {
         await window.Clerk.signOut();
       } catch (_) {}

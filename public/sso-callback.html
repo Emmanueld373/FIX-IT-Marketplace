@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Authenticating — Fix it</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="stylesheet" href="/css/globals.css">
+  <style>
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+      background: #f8fafc;
+      font-family: var(--font-body, -apple-system, BlinkMacSystemFont, sans-serif);
+      color: #1e293b;
+    }
+    .callback-box {
+      text-align: center;
+      background: #ffffff;
+      padding: 2.5rem;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+      border: 1px solid #e2e8f0;
+      max-width: 400px;
+      width: 90%;
+    }
+    .spinner {
+      font-size: 32px;
+      color: #008744;
+      margin-bottom: 1.25rem;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin { 100% { transform: rotate(360deg); } }
+  </style>
+</head>
+<body>
+  <div class="callback-box">
+    <i class="fa-solid fa-circle-notch spinner"></i>
+    <h2 style="font-size: 1.25rem; font-weight: 700; margin: 0 0 0.5rem;">Authenticating with Google</h2>
+    <p style="font-size: 14px; color: #64748b; margin: 0;">Securing your session, please wait a moment...</p>
+  </div>
+
+  <script src="/js/api.js"></script>
+  <script src="/js/auth.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+      await Auth.init();
+      if (window.Clerk) {
+        try {
+          await window.Clerk.handleRedirectCallback();
+        } catch (e) {
+          console.error('SSO Callback handler error:', e);
+        }
+      }
+      const pendingRole = localStorage.getItem('fixit_pending_role') || 'customer';
+      localStorage.removeItem('fixit_pending_role');
+      if (pendingRole === 'provider') {
+        window.location.href = '/provider/dashboard';
+      } else {
+        window.location.href = '/';
+      }
+    });
+  </script>
+</body>
+</html>

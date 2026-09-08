@@ -173,29 +173,39 @@
           : '<i class="fa-regular fa-eye"></i>';
       });
 
-      // Google 1-Click Simulation
-      document.querySelector('#btn-google-login')?.addEventListener('click', () => {
-        Auth.loginDemo('customer').then(() => {
-          window.location.href = '/';
-        });
+      // Google 1-Click / Real OAuth
+      document.querySelector('#btn-google-login')?.addEventListener('click', async () => {
+        const btn = document.querySelector('#btn-google-login');
+        const origHtml = btn.innerHTML;
+        btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Connecting to Google...';
+        btn.disabled = true;
+        try {
+          await Auth.signInWithGoogle('/');
+        } catch (err) {
+          console.error(err);
+          btn.innerHTML = origHtml;
+          btn.disabled = false;
+        }
       });
 
       // Email Sign in form
-      document.querySelector('#signin-form')?.addEventListener('submit', (e) => {
+      document.querySelector('#signin-form')?.addEventListener('submit', async (e) => {
         e.preventDefault();
         const email = document.querySelector('#signin-email').value.trim();
-        const name = email.split('@')[0].replace(/[._]/g, ' ');
-        const formattedName = name.charAt(0).toUpperCase() + name.slice(1);
+        const password = document.querySelector('#signin-password').value;
+        const submitBtn = document.querySelector('.auth-submit-btn');
+        const origHtml = submitBtn.innerHTML;
+        submitBtn.innerHTML = '<span>Signing in...</span> <i class="fa-solid fa-circle-notch fa-spin"></i>';
+        submitBtn.disabled = true;
 
-        Auth.user = {
-          id: 'usr_' + Date.now(),
-          fullName: formattedName,
-          primaryEmail: email,
-          imageUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
-          role: 'customer'
-        };
-        localStorage.setItem('fixit_local_user', JSON.stringify(Auth.user));
-        window.location.href = '/';
+        try {
+          await Auth.signInWithEmail(email, password);
+        } catch (err) {
+          console.error(err);
+        } finally {
+          submitBtn.innerHTML = origHtml;
+          submitBtn.disabled = false;
+        }
       });
     });
   </script>

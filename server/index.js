@@ -37,6 +37,15 @@ app.use('/api/provider', providerRoutes); // /api/provider/profile, /api/provide
 app.use('/api/upload', uploadRoutes);  // /api/upload/image
 app.use('/api/profile', profileRoutes); // /api/profile/sync
 
+// Client public configuration endpoint (exposes Clerk publishable key & Sanity project ID)
+app.get('/api/config', (req, res) => {
+  res.json({
+    clerkPublishableKey: process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY || '',
+    sanityProjectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'csp17c7x',
+    sanityDataset: process.env.NEXT_PUBLIC_SANITY_DATASET || 'production'
+  });
+});
+
 // SPA-style fallback: serve the appropriate HTML page for known routes
 const pageRoutes = {
   '/': 'index.html',
@@ -47,6 +56,7 @@ const pageRoutes = {
   '/admin': 'admin.html',
   '/sign-in': 'sign-in.html',
   '/sign-up': 'sign-up.html',
+  '/sso-callback': 'sso-callback.html',
   '/provider/dashboard': 'provider-dashboard.html',
   '/provider/onboarding': 'provider-onboarding.html',
   '/provider/profile': 'provider-profile.html',

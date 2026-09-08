@@ -13,6 +13,7 @@
     { "source": "/search", "destination": "/search.html" },
     { "source": "/sign-in", "destination": "/sign-in.html" },
     { "source": "/sign-up", "destination": "/sign-up.html" },
+    { "source": "/sso-callback", "destination": "/sso-callback.html" },
     { "source": "/admin", "destination": "/admin.html" }
   ]
 }
