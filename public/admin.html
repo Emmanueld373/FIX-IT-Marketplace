@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard — Fix it</title>
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+  <link rel="stylesheet" href="/css/globals.css">
+  <link rel="stylesheet" href="/css/components.css">
+  <link rel="stylesheet" href="/css/layout.css">
+  <link rel="stylesheet" href="/css/pages.css">
+</head>
+<body>
+
+  <div id="main-header"></div>
+
+  <main class="dashboard-container">
+    <div id="admin-auth-guard"></div>
+
+    <div style="margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: flex-end;">
+      <div>
+        <h1 class="font-heading" style="font-size: 2rem; font-weight: 800; color: #222325;">Marketplace Administration</h1>
+        <p style="color: #62646a; margin-top: 0.25rem;">Monitor platform growth, verify artisan applications, and oversee bookings.</p>
+      </div>
+      <span class="badge badge-verified" style="font-size: 13px; padding: 6px 12px;">Admin Superuser</span>
+    </div>
+
+    <!-- Stats Grid -->
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-label">Active Providers</div>
+        <div class="stat-val" id="admin-stat-pros">18</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Pending Verification</div>
+        <div class="stat-val" style="color: #d97706;" id="admin-stat-pending">3</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Total Bookings</div>
+        <div class="stat-val" id="admin-stat-bookings">142</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Gross Platform Volume</div>
+        <div class="stat-val" style="color: #008744;" id="admin-stat-revenue">GH₵ 28,450</div>
+      </div>
+    </div>
+
+    <!-- Provider Verification Management -->
+    <div style="margin-top: 2rem;">
+      <h2 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 1rem;">Provider Verification Requests</h2>
+      <div class="table-responsive">
+        <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 14px;">
+          <thead style="background: #f9fafb; border-bottom: 1px solid #dadbdd;">
+            <tr>
+              <th style="padding: 1rem;">Provider</th>
+              <th style="padding: 1rem;">Status</th>
+              <th style="padding: 1rem;">Rating / Jobs</th>
+              <th style="padding: 1rem; text-align: right;">Action</th>
+            </tr>
+          </thead>
+          <tbody id="admin-providers-table">
+            <!-- Rendered by admin.js -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+  <div id="main-footer"></div>
+
+  <script src="/js/api.js"></script>
+  <script src="/js/auth.js"></script>
+  <script src="/js/components.js"></script>
+  <script src="/js/app.js"></script>
+  <script src="/js/admin.js"></script>
+</body>
+</html>

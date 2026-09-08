@@ -1,0 +1,26 @@
+services:
+  - type: web
+    name: fixit-marketplace
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NEXT_PUBLIC_SANITY_PROJECT_ID
+        value: csp17c7x
+      - key: NEXT_PUBLIC_SANITY_DATASET
+        value: production
+      - key: NEXT_PUBLIC_SANITY_API_VERSION
+        value: 2026-09-06
+      - key: ADMIN_EMAILS
+        value: admin@fixit.gh,emmanuelopokunyame@gmail.com,kingsleydonkor44@gmail.com
+      - key: SANITY_API_READ_TOKEN
+        sync: false
+      - key: SANITY_API_WRITE_TOKEN
+        sync: false
+      - key: NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
+        sync: false
+      - key: CLERK_SECRET_KEY
+        sync: false

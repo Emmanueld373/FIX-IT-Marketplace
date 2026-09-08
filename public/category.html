@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Category Services — Fix it</title>
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+  <link rel="stylesheet" href="/css/globals.css">
+  <link rel="stylesheet" href="/css/components.css">
+  <link rel="stylesheet" href="/css/layout.css">
+  <link rel="stylesheet" href="/css/pages.css">
+</head>
+<body>
+
+  <div id="main-header"></div>
+  <div id="category-nav"></div>
+
+  <main class="search-page-container">
+    <div style="margin-bottom: 2rem; border-bottom: 1px solid #dadbdd; padding-bottom: 1.5rem;">
+      <h1 id="category-title" class="font-heading" style="font-size: 2.25rem; font-weight: 800; color: #222325; margin-bottom: 0.5rem;">
+        Category Services
+      </h1>
+      <p id="category-desc" style="font-size: 1rem; color: #62646a; max-width: 720px;">
+        Explore top professionals available for bookings.
+      </p>
+    </div>
+
+    <div class="service-grid" id="category-services-grid">
+      <div style="grid-column: 1 / -1; display: flex; justify-content: center; padding: 4rem;">
+        <div class="spinner"></div>
+      </div>
+    </div>
+  </main>
+
+  <div id="main-footer"></div>
+
+  <script src="/js/api.js"></script>
+  <script src="/js/auth.js"></script>
+  <script src="/js/components.js"></script>
+  <script src="/js/app.js"></script>
+  <script src="/js/category.js"></script>
+</body>
+</html>

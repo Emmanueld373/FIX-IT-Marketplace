@@ -1,0 +1,20 @@
+{
+  "name": "fixit-server",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node --watch index.js"
+  },
+  "dependencies": {
+    "@clerk/backend": "^2.0.0",
+    "@sanity/client": "^7.0.0",
+    "@sanity/image-url": "^2.1.1",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.0",
+    "express": "^5.1.0",
+    "multer": "^1.4.5-lts.2"
+  }
+}

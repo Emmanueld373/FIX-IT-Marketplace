@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Provider Profile — Fix it</title>
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+  <link rel="stylesheet" href="/css/globals.css">
+  <link rel="stylesheet" href="/css/components.css">
+  <link rel="stylesheet" href="/css/layout.css">
+  <link rel="stylesheet" href="/css/pages.css">
+</head>
+<body>
+
+  <div id="main-header"></div>
+
+  <main class="dashboard-container" style="max-width: 720px;">
+    <div style="margin-bottom: 2rem;">
+      <h1 class="font-heading" style="font-size: 2rem; font-weight: 800; color: #222325;">Profile & Settings</h1>
+      <p style="color: #62646a; margin-top: 0.25rem;">Keep your public information, verified credentials, and bio up-to-date.</p>
+    </div>
+
+    <div style="background: #fff; border: 1px solid #dadbdd; border-radius: 12px; padding: 2rem; box-shadow: var(--shadow-sm);">
+      <form id="provider-profile-form" style="display: flex; flex-direction: column; gap: 1.25rem;">
+        <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
+          <img id="profile-preview-avatar" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80" style="width: 72px; height: 72px; border-radius: 50%; object-fit: cover;" />
+          <div>
+            <span class="badge badge-verified">Verified Account</span>
+            <div style="font-size: 13px; color: #74767e; margin-top: 4px;">Photo shown on all your service cards</div>
+          </div>
+        </div>
+
+        <div>
+          <label class="form-label">Full Name</label>
+          <input type="text" id="prof-name" class="form-input" value="Kofi Owusu" required />
+        </div>
+
+        <div>
+          <label class="form-label">Professional Headline</label>
+          <input type="text" id="prof-headline" class="form-input" value="Certified Professional Cleaning Specialist" required />
+        </div>
+
+        <div>
+          <label class="form-label">Bio & Overview</label>
+          <textarea id="prof-bio" class="form-input" rows="4">Dedicated, reliable, and punctual artisan serving Accra with over 7 years of hands-on experience and pristine quality standards.</textarea>
+        </div>
+
+        <div>
+          <label class="form-label">Operating Areas</label>
+          <input type="text" id="prof-areas" class="form-input" value="Accra Central, East Legon, Spintex, Osu, Cantonments" />
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="align-self: flex-start; margin-top: 0.5rem;">
+          Save Profile Changes
+        </button>
+      </form>
+    </div>
+  </main>
+
+  <div id="main-footer"></div>
+
+  <script src="/js/api.js"></script>
+  <script src="/js/auth.js"></script>
+  <script src="/js/components.js"></script>
+  <script src="/js/app.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const form = document.querySelector('#provider-profile-form');
+      if (form) {
+        form.addEventListener('submit', (e) => {
+          e.preventDefault();
+          alert('Profile settings saved successfully!');
+        });
+      }
+    });
+  </script>
+</body>
+</html>

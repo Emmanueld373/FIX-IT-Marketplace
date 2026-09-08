@@ -1,0 +1,23 @@
+{
+  "name": "fixit-marketplace",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node server/index.js",
+    "dev": "node --watch server/index.js",
+    "seed": "node scripts/seed-sample-data.mjs",
+    "seed:operations": "node scripts/seed-operations-and-search.mjs",
+    "seed:all": "npm run seed && npm run seed:operations"
+  },
+  "dependencies": {
+    "@clerk/backend": "^2.0.0",
+    "@sanity/client": "^7.0.0",
+    "@sanity/image-url": "^2.1.1",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.0",
+    "express": "^5.1.0",
+    "multer": "^1.4.5-lts.2"
+  }
+}

@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fix it — Ghana's #1 Marketplace for Trusted Local Services</title>
+  <meta name="description" content="Connect with certified Ghanaian professionals for house cleaning, plumbing, electrical repairs, painting, carpentry and home maintenance.">
+  
+  <!-- CSS Stylesheets -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+  <link rel="stylesheet" href="/css/globals.css">
+  <link rel="stylesheet" href="/css/components.css">
+  <link rel="stylesheet" href="/css/layout.css">
+  <link rel="stylesheet" href="/css/pages.css">
+</head>
+<body>
+
+  <!-- Dynamic Header Container -->
+  <div id="main-header"></div>
+
+  <!-- Category Navigation Bar -->
+  <div id="category-nav"></div>
+
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <video autoplay loop muted playsinline class="hero-video-bg">
+      <source src="/videos/construction.mp4" type="video/mp4">
+      <source src="/videos/construction-workers.mp4" type="video/mp4">
+    </video>
+    <div class="hero-container">
+      <div class="hero-content">
+        <div class="hero-badge">
+          <span>🇬🇭</span>
+          <span>Verified Local Artisans & Professionals</span>
+        </div>
+        <h1 class="hero-title">
+          Our local professionals<br>will take it from here.
+        </h1>
+        <p class="hero-subtitle">
+          From emergency plumbing and rewiring to deep home cleaning and renovations — book reliable, background-checked pros in minutes.
+        </p>
+
+        <!-- Search Form -->
+        <form id="hero-search-form" class="hero-search-box">
+          <input
+            type="text"
+            placeholder="What service do you need? (e.g. AC repair, plumbing)"
+            aria-label="Search services"
+            required
+          />
+          <button type="submit">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <span>Search</span>
+          </button>
+        </form>
+
+        <!-- Popular Tags -->
+        <div class="hero-popular">
+          <span>Popular:</span>
+          <a href="/categories/plumbing" class="hero-popular-tag">Plumbing</a>
+          <a href="/categories/house-cleaning" class="hero-popular-tag">House Cleaning</a>
+          <a href="/categories/electrical-repairs" class="hero-popular-tag">Electrical</a>
+          <a href="/categories/painting-decorating" class="hero-popular-tag">Painting</a>
+          <a href="/categories/moving-relocation" class="hero-popular-tag">Moving</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Trust Badges Bar -->
+  <div class="trust-bar">
+    <div class="trust-bar-container">
+      <div class="trust-item">
+        <i class="fa-solid fa-shield-halved trust-icon"></i>
+        <span>Vetted & Verified Providers</span>
+      </div>
+      <div class="trust-item">
+        <i class="fa-solid fa-circle-check trust-icon"></i>
+        <span>Fix-it Satisfaction Guarantee</span>
+      </div>
+      <div class="trust-item">
+        <i class="fa-solid fa-tag trust-icon"></i>
+        <span>Upfront & Transparent Pricing</span>
+      </div>
+      <div class="trust-item">
+        <i class="fa-solid fa-comments trust-icon"></i>
+        <span>Direct Chat & Easy Booking</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Categories Section -->
+  <section class="categories-section">
+    <div class="section-header">
+      <div>
+        <h2 class="section-title">Explore Services by Category</h2>
+        <p class="section-subtitle">Find top-rated specialists tailored to your home and commercial needs</p>
+      </div>
+      <a href="/search" class="section-link">
+        <span>View all services</span>
+        <span>&rarr;</span>
+      </a>
+    </div>
+    <div class="categories-grid" id="home-categories-grid">
+      <!-- Dynamically filled by home.js -->
+    </div>
+  </section>
+
+  <!-- Featured Services Section -->
+  <section class="featured-section">
+    <div class="featured-container">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">Popular Local Services</h2>
+          <p class="section-subtitle">Most requested tasks booked by homeowners and businesses this week</p>
+        </div>
+        <a href="/search" class="section-link">
+          <span>See all listings</span>
+          <span>&rarr;</span>
+        </a>
+      </div>
+      <div class="service-grid" id="home-services-grid">
+        <!-- Dynamically rendered by home.js -->
+      </div>
+    </div>
+  </section>
+
+  <!-- Value Props Section -->
+  <section class="value-props-section">
+    <div class="value-props-container">
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+        <h2 class="font-heading" style="font-size: 1.75rem; font-weight: 800; color: #222325;">
+          Make it all happen with local professionals
+        </h2>
+        <a href="/search" class="btn btn-primary">Join now</a>
+      </div>
+
+      <div class="value-props-grid">
+        <div class="value-prop-card">
+          <div class="value-prop-icon"><i class="fa-solid fa-location-dot"></i></div>
+          <h3 style="font-weight: 700; font-size: 1rem; color: #222325;">Find help near you</h3>
+          <p style="font-size: 0.875rem; color: #62646a;">Discover trusted, verified professionals in your local area.</p>
+        </div>
+        <div class="value-prop-card">
+          <div class="value-prop-icon"><i class="fa-solid fa-user-check"></i></div>
+          <h3 style="font-weight: 700; font-size: 1rem; color: #222325;">Choose your professional</h3>
+          <p style="font-size: 0.875rem; color: #62646a;">Compare skills, background credentials, ratings, and transparent prices.</p>
+        </div>
+        <div class="value-prop-card">
+          <div class="value-prop-icon"><i class="fa-regular fa-calendar-check"></i></div>
+          <h3 style="font-weight: 700; font-size: 1rem; color: #222325;">Book a convenient time</h3>
+          <p style="font-size: 0.875rem; color: #62646a;">Schedule appointments when it works best for your schedule.</p>
+        </div>
+        <div class="value-prop-card">
+          <div class="value-prop-icon"><i class="fa-solid fa-shield-halved"></i></div>
+          <h3 style="font-weight: 700; font-size: 1rem; color: #222325;">Pay securely</h3>
+          <p style="font-size: 0.875rem; color: #62646a;">Safe, transparent escrow payments backed by Fix-it satisfaction guarantee.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pro Banner -->
+  <section class="pro-banner-section" id="fix-it-pro">
+    <div class="pro-banner-card">
+      <div class="pro-banner-content">
+        <div class="pro-banner-tag">
+          <span>fix it pro</span>
+          <span class="pro-banner-tag-dot"></span>
+        </div>
+        <h2 class="pro-banner-title">
+          Let experts find the right professional for you
+        </h2>
+        <ul class="pro-banner-list">
+          <li>Get matched with trusted, pre-vetted local professionals</li>
+          <li>Compare skills, reviews, certifications, and real-time rates</li>
+          <li>Find reliable, guaranteed help for any home or estate project</li>
+        </ul>
+        <div style="display: flex; gap: 1rem; align-items: center; margin-top: 0.5rem; flex-wrap: wrap;">
+          <a href="/search?pro=true" class="btn btn-secondary" style="background: #ffffff; color: #003912; font-weight: 700;">
+            Find a professional
+          </a>
+          <span style="font-size: 0.8125rem; color: rgba(255,255,255,0.9);"><i class="fa-solid fa-shield-halved" style="margin-right: 4px;"></i> 100% money-back guarantee</span>
+        </div>
+      </div>
+
+      <div style="display: flex; gap: 1rem; align-items: center;">
+        <div style="width: 200px; height: 260px; border-radius: 12px; background: #1b3824; border: 1px solid rgba(255,255,255,0.25); overflow: hidden; position: relative; box-shadow: var(--shadow-xl);">
+          <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=500&q=80" alt="Lilian Pro" style="width: 100%; height: 100%; object-fit: cover;" />
+          <div style="position: absolute; bottom: 0; left: 0; right: 0; padding: 12px; background: linear-gradient(to top, rgba(0,0,0,0.85), transparent);">
+            <div style="font-weight: 700; font-size: 14px; color: #fff;">Lilian Mensah</div>
+            <div style="font-size: 12px; color: rgba(255,255,255,0.8);">Cleaning & Home Specialist</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Video Showcase Section -->
+  <section class="video-showcase-section">
+    <div class="video-showcase-container">
+      <div>
+        <h2 class="font-heading" style="font-size: 1.75rem; font-weight: 800; color: #222325;">
+          What success on Fix it looks like
+        </h2>
+        <p style="color: #62646a; margin-top: 4px;">See how local Ghanaian artisans and homeowners bring maintenance projects to life.</p>
+      </div>
+
+      <div class="video-player-wrap">
+        <video controls poster="https://images.unsplash.com/photo-1504307651254-35680f356dfd?auto=format&fit=crop&w=1800&q=80">
+          <source src="/videos/construction.mp4" type="video/mp4">
+          <source src="/videos/construction-workers.mp4" type="video/mp4">
+          Your browser does not support HTML5 video.
+        </video>
+      </div>
+    </div>
+  </section>
+
+  <!-- Guides Section -->
+  <section class="guides-section" id="guides">
+    <div class="guides-container">
+      <div style="display: flex; justify-content: space-between; align-items: flex-end;">
+        <div>
+          <h2 class="font-heading" style="font-size: 1.75rem; font-weight: 800; color: #222325;">
+            Guides to help you at home
+          </h2>
+          <p style="color: #62646a; margin-top: 4px;">Expert advice on hiring, pricing, and project planning.</p>
+        </div>
+        <a href="/search" class="section-link"><span>See all guides</span> <span>&rarr;</span></a>
+      </div>
+
+      <div class="guides-grid">
+        <a href="/search?category=house-cleaning" class="guide-card">
+          <img src="https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&w=800&q=80" alt="Guide 1" class="guide-card-img" />
+          <h3 class="guide-card-title">Prepare your home for a deep cleaning</h3>
+        </a>
+        <a href="/search?category=painting-decorating" class="guide-card">
+          <img src="https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=800&q=80" alt="Guide 2" class="guide-card-img" />
+          <h3 class="guide-card-title">Plan your next painting & renovation project</h3>
+        </a>
+        <a href="/search?category=plumbing" class="guide-card">
+          <img src="https://images.unsplash.com/photo-1600585154526-990dced4db0d?auto=format&fit=crop&w=800&q=80" alt="Guide 3" class="guide-card-img" />
+          <h3 class="guide-card-title">How to verify and hire licensed plumbers</h3>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Banner Section -->
+  <section class="cta-banner-section">
+    <div class="cta-banner-card">
+      <h2 class="cta-banner-title">
+        Local services at your <span>fingertips</span>
+      </h2>
+      <div style="display: flex; gap: 1rem; align-items: center; flex-wrap: wrap;">
+        <a href="/sign-up" class="btn btn-primary btn-lg" style="background: #ffffff; color: #222325; font-weight: 700;">
+          Join Fix it
+        </a>
+        <a href="/search" class="btn btn-outline btn-lg" style="border-color: #ffffff; color: #ffffff;">
+          Explore All Services
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Universal Footer -->
+  <div id="main-footer"></div>
+
+  <!-- Scripts -->
+  <script src="/js/api.js"></script>
+  <script src="/js/auth.js"></script>
+  <script src="/js/components.js"></script>
+  <script src="/js/app.js"></script>
+  <script src="/js/home.js"></script>
+</body>
+</html>

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Become a Provider — Fix it</title>
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+  <link rel="stylesheet" href="/css/globals.css">
+  <link rel="stylesheet" href="/css/components.css">
+  <link rel="stylesheet" href="/css/layout.css">
+  <link rel="stylesheet" href="/css/pages.css">
+</head>
+<body>
+
+  <div id="main-header"></div>
+
+  <main class="auth-page">
+    <div class="auth-card" style="max-width: 540px;">
+      <div style="text-align: center; margin-bottom: 2rem;">
+        <span class="badge badge-verified" style="margin-bottom: 8px;">Artisans & Professionals</span>
+        <h1 class="font-heading" style="font-size: 1.75rem; font-weight: 800; color: #222325;">Join as a Fix-it Pro</h1>
+        <p style="font-size: 14px; color: #62646a; margin-top: 6px;">Grow your client base and earn directly on Ghana's trusted home service marketplace.</p>
+      </div>
+
+      <form id="provider-onboarding-form" style="display: flex; flex-direction: column; gap: 1.25rem;">
+        <div>
+          <label class="form-label">Full Name or Business Name</label>
+          <input type="text" name="displayName" placeholder="e.g. Kofi Mensah / CleanMasters GH" class="form-input" required />
+        </div>
+
+        <div>
+          <label class="form-label">Professional Headline</label>
+          <input type="text" name="headline" placeholder="e.g. Certified Electrician with 8+ Years Experience" class="form-input" required />
+        </div>
+
+        <div>
+          <label class="form-label">Primary Trade / Specialty</label>
+          <select name="category" class="form-input" required>
+            <option value="cleaning">House & Commercial Cleaning</option>
+            <option value="plumbing">Plumbing & Pipe Fitting</option>
+            <option value="electrical">Electrical Wiring & Repairs</option>
+            <option value="painting">Painting & Decorating</option>
+            <option value="moving">Moving & Logistics</option>
+            <option value="assembly">Furniture Assembly</option>
+            <option value="gardening">Gardening & Landscaping</option>
+          </select>
+        </div>
+
+        <div>
+          <label class="form-label">Service Areas (comma-separated)</label>
+          <input type="text" name="areas" placeholder="e.g. East Legon, Osu, Spintex, Airport" class="form-input" required />
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-lg" style="margin-top: 0.5rem; width: 100%;">
+          Complete Registration & Go to Dashboard
+        </button>
+      </form>
+    </div>
+  </main>
+
+  <div id="main-footer"></div>
+
+  <script src="/js/api.js"></script>
+  <script src="/js/auth.js"></script>
+  <script src="/js/components.js"></script>
+  <script src="/js/app.js"></script>
+  <script src="/js/provider.js"></script>
+</body>
+</html>

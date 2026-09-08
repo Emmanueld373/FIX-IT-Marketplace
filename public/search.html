@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Search Local Services — Fix it</title>
+  <meta name="description" content="Search and discover verified home improvement and maintenance pros in Ghana.">
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+  <link rel="stylesheet" href="/css/globals.css">
+  <link rel="stylesheet" href="/css/components.css">
+  <link rel="stylesheet" href="/css/layout.css">
+  <link rel="stylesheet" href="/css/pages.css">
+</head>
+<body>
+
+  <!-- Dynamic Header -->
+  <div id="main-header"></div>
+
+  <!-- Category Nav -->
+  <div id="category-nav"></div>
+
+  <!-- Search Page Container -->
+  <main class="search-page-container">
+    <div class="search-results-header">
+      <div>
+        <h1 class="font-heading" id="search-query-display" style="font-size: 1.75rem; font-weight: 800; color: #222325;">
+          All Available Services
+        </h1>
+        <div id="search-count" class="search-count">Finding available professionals...</div>
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <label for="search-sort-select" style="font-size: 13px; color: #74767e; font-weight: 500;">Sort by:</label>
+        <select id="search-sort-select" class="form-input" style="width: auto; padding: 6px 12px; font-size: 13px;">
+          <option value="relevance">Most Relevant</option>
+          <option value="price_asc">Price: Low to High</option>
+          <option value="price_desc">Price: High to Low</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="search-layout">
+      <!-- Filter Sidebar -->
+      <aside class="search-filters-sidebar">
+        <form id="search-filter-form">
+          <div class="filter-group">
+            <h3 class="filter-title">Category</h3>
+            <label class="filter-option"><input type="radio" name="category" value="" checked> All Categories</label>
+            <label class="filter-option"><input type="radio" name="category" value="house-cleaning"> House Cleaning</label>
+            <label class="filter-option"><input type="radio" name="category" value="plumbing"> Plumbing</label>
+            <label class="filter-option"><input type="radio" name="category" value="electrical-repairs"> Electrical</label>
+            <label class="filter-option"><input type="radio" name="category" value="painting-decorating"> Painting</label>
+            <label class="filter-option"><input type="radio" name="category" value="moving-relocation"> Moving</label>
+            <label class="filter-option"><input type="radio" name="category" value="furniture-assembly"> Assembly</label>
+          </div>
+
+          <div class="filter-group">
+            <h3 class="filter-title">Budget (GH₵)</h3>
+            <div style="display: flex; gap: 8px; align-items: center;">
+              <input type="number" name="minPrice" placeholder="Min" class="form-input" style="padding: 6px;" />
+              <span>-</span>
+              <input type="number" name="maxPrice" placeholder="Max" class="form-input" style="padding: 6px;" />
+            </div>
+            <button type="submit" class="btn btn-outline btn-sm" style="width: 100%; margin-top: 10px;">Apply Price</button>
+          </div>
+
+          <div class="filter-group">
+            <h3 class="filter-title">Service Location</h3>
+            <select name="location" class="form-input" style="font-size: 13px;">
+              <option value="">Any Region</option>
+              <option value="Accra">Greater Accra</option>
+              <option value="Kumasi">Kumasi / Ashanti</option>
+              <option value="Tema">Tema</option>
+              <option value="Takoradi">Takoradi</option>
+            </select>
+          </div>
+        </form>
+      </aside>
+
+      <!-- Results Grid -->
+      <div class="service-grid" id="search-results-grid">
+        <!-- Rendered by search.js -->
+      </div>
+    </div>
+  </main>
+
+  <div id="main-footer"></div>
+
+  <!-- Scripts -->
+  <script src="/js/api.js"></script>
+  <script src="/js/auth.js"></script>
+  <script src="/js/components.js"></script>
+  <script src="/js/app.js"></script>
+  <script src="/js/search.js"></script>
+</body>
+</html>

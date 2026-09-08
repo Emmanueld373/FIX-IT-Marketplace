@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Provider Dashboard — Fix it</title>
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+  <link rel="stylesheet" href="/css/globals.css">
+  <link rel="stylesheet" href="/css/components.css">
+  <link rel="stylesheet" href="/css/layout.css">
+  <link rel="stylesheet" href="/css/pages.css">
+</head>
+<body>
+
+  <div id="main-header"></div>
+
+  <main class="dashboard-container">
+    <div style="margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap; gap: 1rem;">
+      <div>
+        <h1 class="font-heading" style="font-size: 2rem; font-weight: 800; color: #222325;">Provider Workspace</h1>
+        <p style="color: #62646a; margin-top: 0.25rem;">Manage your active gigs, track revenue, and monitor client inquiries.</p>
+      </div>
+      <button class="btn btn-primary" onclick="document.querySelector('#new-service-modal').style.display = 'flex'">
+        <i class="fa-solid fa-plus"></i>
+        <span>Create New Gig Listing</span>
+      </button>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-grid" id="provider-stats-container">
+      <div class="stat-card">
+        <div class="stat-label">Total Earnings</div>
+        <div class="stat-val" style="color: #008744;" id="prov-earnings">GH₵ 3,200</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Jobs Completed</div>
+        <div class="stat-val" id="prov-jobs">14</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Customer Rating</div>
+        <div class="stat-val" id="prov-rating"><i class="fa-solid fa-star" style="color: #ffbe5b; font-size: 1.1rem; margin-right: 4px;"></i>4.9</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Active Gigs</div>
+        <div class="stat-val" id="prov-gigs">2</div>
+      </div>
+    </div>
+
+    <!-- My Gigs -->
+    <div style="margin-top: 2.5rem;">
+      <h2 style="font-size: 1.25rem; font-weight: 700; margin-bottom: 1rem;">My Published Services</h2>
+      <div class="table-responsive">
+        <table style="width: 100%; border-collapse: collapse; text-align: left; font-size: 14px;">
+          <thead style="background: #f9fafb; border-bottom: 1px solid #dadbdd;">
+            <tr>
+              <th style="padding: 1rem;">Service Title</th>
+              <th style="padding: 1rem;">Category</th>
+              <th style="padding: 1rem;">Starting Price</th>
+              <th style="padding: 1rem;">Status</th>
+            </tr>
+          </thead>
+          <tbody id="prov-services-list">
+            <tr style="border-bottom: 1px solid #f0f0f0;">
+              <td style="padding: 1rem; font-weight: 600;">Professional Deep Home Cleaning</td>
+              <td style="padding: 1rem;">House Cleaning</td>
+              <td style="padding: 1rem; font-weight: 700;">GH₵ 150</td>
+              <td style="padding: 1rem;"><span class="badge badge-success">Active</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Create Service Modal -->
+    <div id="new-service-modal" class="modal-overlay" style="display: none;">
+      <div class="modal-card">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+          <h3 style="font-size: 1.25rem; font-weight: 700;">Publish a New Service Gig</h3>
+          <button style="background: none; border: none; font-size: 1.5rem; cursor: pointer;" onclick="document.querySelector('#new-service-modal').style.display = 'none'">&times;</button>
+        </div>
+
+        <form id="create-service-form" style="display: flex; flex-direction: column; gap: 1rem;">
+          <div>
+            <label class="form-label">Service Title</label>
+            <input type="text" name="title" placeholder="e.g. Master Carpentry & Custom Shelving" class="form-input" required />
+          </div>
+
+          <div>
+            <label class="form-label">Category</label>
+            <select name="category" class="form-input" required>
+              <option value="house-cleaning">House Cleaning</option>
+              <option value="plumbing">Plumbing</option>
+              <option value="electrical-repairs">Electrical Repairs</option>
+              <option value="painting-decorating">Painting & Decorating</option>
+              <option value="moving-relocation">Moving & Relocation</option>
+              <option value="furniture-assembly">Furniture Assembly</option>
+              <option value="gardening-landscaping">Gardening & Landscaping</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="form-label">Starting Price (GH₵)</label>
+            <input type="number" name="price" placeholder="150" class="form-input" required />
+          </div>
+
+          <div>
+            <label class="form-label">Service Summary</label>
+            <textarea name="summary" rows="3" placeholder="Describe the service, scope, and your experience..." class="form-input" required></textarea>
+          </div>
+
+          <button type="submit" class="btn btn-primary" style="margin-top: 0.5rem;">
+            Publish Gig
+          </button>
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <div id="main-footer"></div>
+
+  <script src="/js/api.js"></script>
+  <script src="/js/auth.js"></script>
+  <script src="/js/components.js"></script>
+  <script src="/js/app.js"></script>
+  <script src="/js/provider.js"></script>
+</body>
+</html>
