@@ -43,64 +43,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       const res = await API.searchServices({ q, category, location, minPrice, maxPrice, sort });
       let services = res?.services || [];
 
-      // If empty and searching with demo fallback
-      if (services.length === 0) {
-        // Create demo results matching query or default
-        const sampleServices = [
-          {
-            _id: 'demo_1',
-            title: 'Professional Deep Home & Apartment Cleaning',
-            slug: 'professional-deep-home-cleaning',
-            coverImageUrl: 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=600&auto=format&fit=crop&q=80',
-            startingPrice: 150,
-            currency: 'GH₵',
-            categoryTitle: 'House Cleaning',
-            categorySlug: 'house-cleaning',
-            provider: { displayName: 'Kofi Owusu', rating: 4.9, completedJobsCount: 84, photoUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&auto=format&fit=crop&q=80' }
-          },
-          {
-            _id: 'demo_2',
-            title: 'Emergency Plumbing, Pipe Repairs & Drain Unblocking',
-            slug: 'emergency-plumbing-pipe-repairs',
-            coverImageUrl: 'https://images.unsplash.com/photo-1607472586893-edb57bdc0e39?w=600&auto=format&fit=crop&q=80',
-            startingPrice: 200,
-            currency: 'GH₵',
-            categoryTitle: 'Plumbing',
-            categorySlug: 'plumbing',
-            provider: { displayName: 'Kwabena Mensah', rating: 4.8, completedJobsCount: 112, photoUrl: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&auto=format&fit=crop&q=80' }
-          },
-          {
-            _id: 'demo_3',
-            title: 'Certified Residential Electrical Wiring & Installation',
-            slug: 'residential-electrical-wiring',
-            coverImageUrl: 'https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=600&auto=format&fit=crop&q=80',
-            startingPrice: 180,
-            currency: 'GH₵',
-            categoryTitle: 'Electrical Repairs',
-            categorySlug: 'electrical-repairs',
-            provider: { displayName: 'Emmanuel Boateng', rating: 5.0, completedJobsCount: 65, photoUrl: 'https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=100&auto=format&fit=crop&q=80' }
-          },
-          {
-            _id: 'demo_4',
-            title: 'Full Interior & Exterior House Painting Services',
-            slug: 'interior-exterior-house-painting',
-            coverImageUrl: 'https://images.unsplash.com/photo-1589939705384-5185137a7f0f?w=600&auto=format&fit=crop&q=80',
-            startingPrice: 350,
-            currency: 'GH₵',
-            categoryTitle: 'Painting & Decorating',
-            categorySlug: 'painting-decorating',
-            provider: { displayName: 'Akosua Frimpong', rating: 4.9, completedJobsCount: 43, photoUrl: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=100&auto=format&fit=crop&q=80' }
-          }
-        ];
-
-        services = sampleServices.filter(s => {
-          if (q && !s.title.toLowerCase().includes(q.toLowerCase()) && !s.categoryTitle.toLowerCase().includes(q.toLowerCase())) return false;
-          if (category && s.categorySlug !== category) return false;
-          return true;
-        });
-        if (services.length === 0 && !q && !category) services = sampleServices;
-      }
-
+      // Real services from catalog
       if (searchCountEl) {
         searchCountEl.textContent = `${services.length} services available`;
       }

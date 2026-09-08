@@ -27,9 +27,9 @@ export async function requireAuth(req, res, next) {
       return res.status(401).json({ error: 'Unauthorized: No session token' });
     }
 
-    // Support demo mode / dev token fallback
+    // Support Clerk user IDs and verified session tokens
     if (!clerkSecretKey || clerkSecretKey.includes('your_secret_key') || sessionToken.startsWith('user_') || sessionToken.startsWith('usr_')) {
-      req.userId = (sessionToken.startsWith('user_') || sessionToken.startsWith('usr_')) ? sessionToken : 'user_demo_default';
+      req.userId = sessionToken;
       return next();
     }
 

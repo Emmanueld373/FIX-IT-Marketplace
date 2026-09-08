@@ -3,20 +3,16 @@
  */
 
 document.addEventListener('DOMContentLoaded', async () => {
-  // Ensure user has admin rights or allow switching to Admin demo
+  // Ensure user has admin rights
   if (!Auth.isAdmin()) {
     const banner = document.querySelector('#admin-auth-guard');
     if (banner) {
       banner.innerHTML = `
-        <div style="background: #fff3cd; color: #856404; padding: 1rem; border-radius: 8px; margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center;">
-          <span><i class="fa-solid fa-triangle-exclamation" style="margin-right: 6px;"></i> You are currently in visitor mode. Click to switch to Admin account for testing.</span>
-          <button id="admin-demo-btn" class="btn btn-primary btn-sm">Sign in as Administrator</button>
+        <div style="background: #eef2ff; color: #3730a3; padding: 1rem 1.25rem; border-radius: 8px; margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center; border: 1px solid #c7d2fe;">
+          <span><i class="fa-solid fa-shield-halved" style="margin-right: 8px;"></i> Administrator Portal. Sign in with an authorized administrator account to manage platform providers and bookings.</span>
+          <a href="/sign-in?redirect=/admin" class="btn btn-primary btn-sm">Sign In as Admin</a>
         </div>
       `;
-      document.querySelector('#admin-demo-btn')?.addEventListener('click', async () => {
-        await Auth.loginDemo('admin');
-        window.location.reload();
-      });
     }
   }
 

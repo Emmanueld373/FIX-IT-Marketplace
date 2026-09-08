@@ -12,6 +12,8 @@ import bookingsRoutes from './routes/api-bookings.js';
 import providerRoutes from './routes/api-provider.js';
 import uploadRoutes from './routes/api-upload.js';
 import profileRoutes from './routes/api-profile.js';
+import messagesRoutes from './routes/api-messages.js';
+import reviewsRoutes from './routes/api-reviews.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -33,6 +35,8 @@ app.use(express.static(publicDir));
 app.use('/api', searchRoutes);        // /api/categories, /api/search, /api/services/:slug
 app.use('/api/admin', adminRoutes);    // /api/admin/check, /api/admin/providers, /api/admin/services
 app.use('/api/bookings', bookingsRoutes); // /api/bookings
+app.use('/api/messages', messagesRoutes); // /api/messages
+app.use('/api/reviews', reviewsRoutes);   // /api/reviews
 app.use('/api/provider', providerRoutes); // /api/provider/profile, /api/provider/dashboard-data, etc.
 app.use('/api/upload', uploadRoutes);  // /api/upload/image
 app.use('/api/profile', profileRoutes); // /api/profile/sync

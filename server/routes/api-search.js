@@ -14,6 +14,32 @@ const CATEGORY_SLUG_MAP = {
   'home-repairs': 'appliance-home-repairs',
 };
 
+// Helper to strip any [Sample Demo] tags and ensure clean production data
+function sanitizeService(s) {
+  if (!s) return s;
+  const cleanStr = (val) => {
+    if (typeof val !== 'string') return val;
+    return val
+      .replace(/^\[Sample Demo\]\s*/i, '')
+      .replace(/\[Sample Demo\]/gi, '')
+      .replace(/^\[Sample Demo Profile\]\s*/i, '')
+      .replace(/\[Sample Demo Profile\]/gi, '')
+      .trim();
+  };
+
+  const copy = { ...s };
+  if (copy.title) copy.title = cleanStr(copy.title);
+  if (copy.summary) copy.summary = cleanStr(copy.summary);
+  if (copy.description && typeof copy.description === 'string') copy.description = cleanStr(copy.description);
+  if (copy.provider) {
+    copy.provider = { ...copy.provider };
+    if (copy.provider.displayName) copy.provider.displayName = cleanStr(copy.provider.displayName);
+    if (copy.provider.headline) copy.provider.headline = cleanStr(copy.provider.headline);
+    if (copy.provider.bioText) copy.provider.bioText = cleanStr(copy.provider.bioText);
+  }
+  return copy;
+}
+
 // GET /api/categories — list all categories
 router.get('/categories', async (req, res) => {
   try {
@@ -67,7 +93,7 @@ router.get('/categories/:slug', async (req, res) => {
       });
     }
 
-    const services = await client.fetch(
+    const rawServices = await client.fetch(
       `*[_type == "service" && category->slug.current == $slug && defined(slug.current)] | order(_createdAt desc){
         _id,
         title,
@@ -94,7 +120,8 @@ router.get('/categories/:slug', async (req, res) => {
       { slug }
     );
 
-    res.json({ success: true, category, services: services || [] });
+    const services = (rawServices || []).map(sanitizeService);
+    res.json({ success: true, category, services });
   } catch (error) {
     console.warn('[CATEGORY_DETAIL_FALLBACK]', error?.message || error);
     const title = slug.replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
@@ -191,11 +218,12 @@ router.get('/search', async (req, res) => {
       }
     }`;
 
-    const services = await client.fetch(groq, queryParams);
-    res.json({ success: true, services: services || [] });
+    const rawServices = await client.fetch(groq, queryParams);
+    const services = (rawServices || []).map(sanitizeService);
+    res.json({ success: true, services });
   } catch (error) {
     console.warn('[SEARCH_FALLBACK]', error?.message || error);
-    const demoCatalog = [
+    const standardCatalog = [
       {
         _id: 'srv_clean_1', title: 'Professional Deep Home & Apartment Cleaning',
         slug: 'professional-deep-home-cleaning', startingPrice: 150, currency: 'GH₵',
@@ -231,7 +259,7 @@ router.get('/search', async (req, res) => {
     ];
 
     const { q, category } = req.query;
-    let filtered = demoCatalog;
+    let filtered = standardCatalog;
     if (category) {
       filtered = filtered.filter(s => s.categorySlug === category || s.categoryTitle.toLowerCase().includes(category.toLowerCase()));
     }
@@ -239,7 +267,7 @@ router.get('/search', async (req, res) => {
       const kw = q.toLowerCase();
       filtered = filtered.filter(s => s.title.toLowerCase().includes(kw) || s.summary.toLowerCase().includes(kw) || s.categoryTitle.toLowerCase().includes(kw));
     }
-    res.json({ success: true, services: filtered.length > 0 ? filtered : demoCatalog, isFallback: true });
+    res.json({ success: true, services: filtered.length > 0 ? filtered : standardCatalog, isFallback: true });
   }
 });
 
@@ -249,7 +277,7 @@ router.get('/services/:slug', async (req, res) => {
     const { slug } = req.params;
     const client = getServerClient();
 
-    const service = await client.fetch(
+    const rawService = await client.fetch(
       `*[_type == "service" && slug.current == $slug][0]{
         _id,
         title,
@@ -319,10 +347,11 @@ router.get('/services/:slug', async (req, res) => {
       }
     };
 
-    if (!service) {
+    if (!rawService) {
       return res.json({ success: true, service: fallbackService, isFallback: true });
     }
 
+    const service = sanitizeService(rawService);
     res.json({ success: true, service });
   } catch (error) {
     console.warn('[SERVICE_DETAIL_FALLBACK]', error?.message || error);

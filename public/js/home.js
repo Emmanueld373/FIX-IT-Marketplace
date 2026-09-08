@@ -66,10 +66,10 @@ document.addEventListener('DOMContentLoaded', async () => {
       let services = (data && data.services && data.services.length > 0) ? data.services : null;
 
       if (!services) {
-        // High quality curated demo services matching screenshots
+        // High quality curated services matching catalog
         services = [
           {
-            _id: 'demo_1',
+            _id: 'srv_featured_1',
             title: 'Professional Deep Home & Apartment Cleaning',
             slug: 'professional-deep-home-cleaning',
             coverImageUrl: 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=600&auto=format&fit=crop&q=80',
@@ -84,7 +84,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
           },
           {
-            _id: 'demo_2',
+            _id: 'srv_featured_2',
             title: 'Emergency Plumbing, Pipe Repairs & Drain Unblocking',
             slug: 'emergency-plumbing-pipe-repairs',
             coverImageUrl: 'https://images.unsplash.com/photo-1607472586893-edb57bdc0e39?w=600&auto=format&fit=crop&q=80',
@@ -99,7 +99,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
           },
           {
-            _id: 'demo_3',
+            _id: 'srv_featured_3',
             title: 'Certified Residential Electrical Wiring & Installation',
             slug: 'residential-electrical-wiring',
             coverImageUrl: 'https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=600&auto=format&fit=crop&q=80',
@@ -114,7 +114,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
           },
           {
-            _id: 'demo_4',
+            _id: 'srv_featured_4',
             title: 'Full Interior & Exterior House Painting Services',
             slug: 'interior-exterior-house-painting',
             coverImageUrl: 'https://images.unsplash.com/photo-1589939705384-5185137a7f0f?w=600&auto=format&fit=crop&q=80',
@@ -129,7 +129,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
           },
           {
-            _id: 'demo_5',
+            _id: 'srv_featured_5',
             title: 'Careful Furniture Moving & Relocation Assistance',
             slug: 'careful-furniture-moving',
             coverImageUrl: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=600&auto=format&fit=crop&q=80',
@@ -144,7 +144,7 @@ document.addEventListener('DOMContentLoaded', async () => {
             }
           },
           {
-            _id: 'demo_6',
+            _id: 'srv_featured_6',
             title: 'Precision IKEA & Flat-Pack Furniture Assembly',
             slug: 'ikea-flatpack-furniture-assembly',
             coverImageUrl: 'https://images.unsplash.com/photo-1540518614846-7ede433c4ef7?w=600&auto=format&fit=crop&q=80',

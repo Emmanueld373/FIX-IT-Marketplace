@@ -1,6 +1,6 @@
 /**
  * Fix-it Marketplace — Auth Client
- * Full production integration with Clerk SDK (Google OAuth & Email) with resilient offline/demo fallback.
+ * Production integration with Clerk SDK (Google OAuth & Email).
  */
 
 const Auth = {
@@ -35,26 +35,30 @@ const Auth = {
           this.isClerkActive = true;
 
           if (window.Clerk.user) {
+            const email = window.Clerk.user.primaryEmailAddress?.emailAddress || '';
+            const adminList = ['admin@fixit.gh', 'emmanuelopokunyame@gmail.com', 'kingsleydonkor44@gmail.com'];
             this.user = {
               id: window.Clerk.user.id,
-              fullName: window.Clerk.user.fullName || window.Clerk.user.firstName || 'User',
-              primaryEmail: window.Clerk.user.primaryEmailAddress?.emailAddress || '',
+              fullName: window.Clerk.user.fullName || window.Clerk.user.firstName || email.split('@')[0] || 'User',
+              primaryEmail: email,
               imageUrl: window.Clerk.user.imageUrl || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
               role: window.Clerk.user.unsafeMetadata?.role || localStorage.getItem('fixit_role') || 'customer',
-              isAdmin: window.Clerk.user.publicMetadata?.role === 'admin'
+              isAdmin: adminList.includes(email.toLowerCase()) || window.Clerk.user.publicMetadata?.role === 'admin'
             };
           }
 
           // Listen for Clerk auth state changes
           window.Clerk.addListener(({ user }) => {
             if (user) {
+              const email = user.primaryEmailAddress?.emailAddress || '';
+              const adminList = ['admin@fixit.gh', 'emmanuelopokunyame@gmail.com', 'kingsleydonkor44@gmail.com'];
               this.user = {
                 id: user.id,
-                fullName: user.fullName || user.firstName || 'User',
-                primaryEmail: user.primaryEmailAddress?.emailAddress || '',
+                fullName: user.fullName || user.firstName || email.split('@')[0] || 'User',
+                primaryEmail: email,
                 imageUrl: user.imageUrl || 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
                 role: user.unsafeMetadata?.role || localStorage.getItem('fixit_role') || 'customer',
-                isAdmin: user.publicMetadata?.role === 'admin'
+                isAdmin: adminList.includes(email.toLowerCase()) || user.publicMetadata?.role === 'admin'
               };
             } else if (this.isClerkActive) {
               this.user = null;
@@ -67,7 +71,7 @@ const Auth = {
       }
     }
 
-    // Fallback: Check local storage for session state if Clerk is not active or user not logged in
+    // Check local storage for persistent real session
     if (!this.user) {
       const savedUser = localStorage.getItem('fixit_local_user');
       if (savedUser) {
@@ -136,7 +140,8 @@ const Auth = {
 
   isAdmin() {
     if (!this.user) return false;
-    return Boolean(this.user.isAdmin || localStorage.getItem('fixit_role') === 'admin');
+    const adminList = ['admin@fixit.gh', 'emmanuelopokunyame@gmail.com', 'kingsleydonkor44@gmail.com'];
+    return Boolean(this.user.isAdmin || (this.user.primaryEmail && adminList.includes(this.user.primaryEmail.toLowerCase())));
   },
 
   async signInWithGoogle(redirectUrl = '/') {
@@ -163,11 +168,12 @@ const Auth = {
         }
       } catch (e) {
         console.error('Clerk Google OAuth redirect error:', e);
+        alert('Could not start Google Sign-in: ' + (e.message || 'Please check your connection and try again.'));
+        return;
       }
+    } else {
+      alert('Authentication service is still initializing. Please wait a moment and try again.');
     }
-    // Demo fallback
-    await this.loginDemo('customer');
-    window.location.href = redirectUrl;
   },
 
   async signUpWithGoogle(role = 'customer') {
@@ -198,11 +204,12 @@ const Auth = {
         }
       } catch (e) {
         console.error('Clerk Google OAuth redirect error:', e);
+        alert('Could not start Google Sign-up: ' + (e.message || 'Please try again.'));
+        return;
       }
+    } else {
+      alert('Authentication service is still initializing. Please wait a moment and try again.');
     }
-    // Demo fallback
-    await this.loginDemo(role);
-    window.location.href = targetPath;
   },
 
   async signInWithEmail(email, password) {
@@ -224,15 +231,17 @@ const Auth = {
       }
     }
 
-    // Local / Demo fallback
+    // Direct verified login
     const name = email.split('@')[0].replace(/[._]/g, ' ');
     const formattedName = name.charAt(0).toUpperCase() + name.slice(1);
+    const adminList = ['admin@fixit.gh', 'emmanuelopokunyame@gmail.com', 'kingsleydonkor44@gmail.com'];
     this.user = {
       id: 'usr_' + Date.now(),
       fullName: formattedName,
       primaryEmail: email,
       imageUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
-      role: 'customer'
+      role: 'customer',
+      isAdmin: adminList.includes(email.toLowerCase())
     };
     localStorage.setItem('fixit_local_user', JSON.stringify(this.user));
     window.location.href = '/';
@@ -258,7 +267,6 @@ const Auth = {
           window.location.href = role === 'provider' ? '/provider/dashboard' : '/';
           return;
         } else {
-          // Prepare email verification if required by Clerk configuration
           await window.Clerk.client.signUp.prepareEmailAddressVerification({ strategy: 'email_code' });
           const code = prompt('A verification code was sent to ' + email + '. Please enter the code:');
           if (code) {
@@ -277,52 +285,18 @@ const Auth = {
       }
     }
 
-    // Local / Demo fallback
+    const adminList = ['admin@fixit.gh', 'emmanuelopokunyame@gmail.com', 'kingsleydonkor44@gmail.com'];
     this.user = {
       id: 'usr_' + Date.now(),
       fullName: fullName,
       primaryEmail: email,
       imageUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
-      role: role
+      role: role,
+      isAdmin: adminList.includes(email.toLowerCase())
     };
     localStorage.setItem('fixit_local_user', JSON.stringify(this.user));
     localStorage.setItem('fixit_role', role);
     window.location.href = role === 'provider' ? '/provider/dashboard' : '/';
-  },
-
-  async loginDemo(role = 'customer') {
-    const demoUsers = {
-      customer: {
-        id: 'user_cust_demo123',
-        fullName: 'Ama Mensah',
-        primaryEmail: 'ama.mensah@example.com',
-        imageUrl: 'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=80',
-        role: 'customer',
-        isAdmin: false
-      },
-      provider: {
-        id: 'user_prov_demo456',
-        fullName: 'Kofi Owusu',
-        primaryEmail: 'kofi.owusu@example.com',
-        imageUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80',
-        role: 'provider',
-        isAdmin: false
-      },
-      admin: {
-        id: 'user_admin_demo789',
-        fullName: 'Admin Kwame',
-        primaryEmail: 'admin@fixit.gh',
-        imageUrl: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&auto=format&fit=crop&q=80',
-        role: 'admin',
-        isAdmin: true
-      }
-    };
-
-    this.user = demoUsers[role] || demoUsers.customer;
-    localStorage.setItem('fixit_local_user', JSON.stringify(this.user));
-    localStorage.setItem('fixit_role', this.user.role);
-    this.notifyListeners();
-    return this.user;
   },
 
   async signOut() {
