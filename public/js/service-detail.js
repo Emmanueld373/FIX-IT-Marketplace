@@ -203,35 +203,45 @@ document.addEventListener('DOMContentLoaded', async () => {
                 </span>
               </div>
 
-              <form id="booking-form" style="display: flex; flex-direction: column; gap: 1rem;">
+              <form id="booking-form" style="display: flex; flex-direction: column; gap: 1.125rem;">
                 <div class="form-group">
-                  <label class="form-label" for="booking-pkg-select">Select Service Package</label>
-                  <select id="booking-pkg-select" class="form-input" style="background-color: #fff;" required>
-                    ${packages.map((pkg, i) => `
-                      <option value="${pkg.price}" data-name="${pkg.name}" ${i === 0 ? 'selected' : ''}>
-                        ${pkg.name} — ${service.currency || 'GH₵'} ${pkg.price}
-                      </option>
-                    `).join('')}
-                  </select>
+                  <label class="form-label" for="booking-pkg-select">Select Service Package <span class="required-star">*</span></label>
+                  <div class="input-with-icon">
+                    <i class="fa-solid fa-layer-group input-icon"></i>
+                    <select id="booking-pkg-select" class="form-input form-select" required>
+                      ${packages.map((pkg, i) => `
+                        <option value="${pkg.price}" data-name="${pkg.name}" ${i === 0 ? 'selected' : ''}>
+                          ${pkg.name} — ${service.currency || 'GH₵'} ${pkg.price}
+                        </option>
+                      `).join('')}
+                    </select>
+                  </div>
                 </div>
 
                 <div class="form-group">
-                  <label class="form-label" for="booking-date">Appointment Date & Time</label>
-                  <input type="datetime-local" id="booking-date" class="form-input" required />
+                  <label class="form-label" for="booking-date">Appointment Date & Time <span class="required-star">*</span></label>
+                  <div class="input-with-icon">
+                    <i class="fa-regular fa-calendar-days input-icon"></i>
+                    <input type="datetime-local" id="booking-date" class="form-input" required />
+                  </div>
                 </div>
 
                 <div class="form-group">
-                  <label class="form-label" for="booking-address">Service Location (Address / Landmark)</label>
-                  <input type="text" id="booking-address" class="form-input" placeholder="e.g. House 14, East Legon, Accra" required />
+                  <label class="form-label" for="booking-address">Service Location (Address / Landmark) <span class="required-star">*</span></label>
+                  <div class="input-with-icon">
+                    <i class="fa-solid fa-location-dot input-icon"></i>
+                    <input type="text" id="booking-address" class="form-input" placeholder="e.g. House 14, East Legon, Accra" required />
+                  </div>
                 </div>
 
                 <div class="form-group">
                   <label class="form-label" for="booking-notes">Special Instructions (Optional)</label>
-                  <textarea id="booking-notes" class="form-input" rows="2" placeholder="Specific areas to focus on, gate code, parking notes..."></textarea>
+                  <textarea id="booking-notes" class="form-input form-textarea" rows="2" placeholder="Specific areas to focus on, gate code, parking notes..."></textarea>
                 </div>
 
-                <button type="submit" class="btn btn-primary btn-lg" id="btn-submit-booking" style="width: 100%; margin-top: 0.5rem;">
-                  Confirm & Request Booking
+                <button type="submit" class="btn btn-primary btn-lg" id="btn-submit-booking" style="width: 100%; margin-top: 0.5rem; height: 48px; font-weight: 700;">
+                  <span>Confirm & Request Booking</span>
+                  <i class="fa-solid fa-arrow-right" style="margin-left: 6px;"></i>
                 </button>
               </form>
 

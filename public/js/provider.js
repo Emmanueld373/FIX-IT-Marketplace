@@ -8,32 +8,44 @@ document.addEventListener('DOMContentLoaded', async () => {
   if (onboardingForm) {
     onboardingForm.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const displayName = onboardingForm.querySelector('[name="displayName"]').value;
-      const headline = onboardingForm.querySelector('[name="headline"]').value;
-      const category = onboardingForm.querySelector('[name="category"]').value;
-      const areas = onboardingForm.querySelector('[name="areas"]').value.split(',').map(s => s.trim());
+      const submitBtn = onboardingForm.querySelector('#btn-submit-onboarding') || onboardingForm.querySelector('button[type="submit"]');
+      const origHtml = submitBtn.innerHTML;
+      submitBtn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> <span>Setting up your workspace...</span>';
+      submitBtn.disabled = true;
 
-      await Auth.becomeProvider(displayName);
-      
-      const payload = {
-        displayName,
-        headline,
-        primaryService: category,
-        tradeCategory: category,
-        location: areas[0] || 'Accra',
-        serviceAreas: areas,
-        verificationStatus: 'verified',
-      };
+      const displayName = onboardingForm.querySelector('[name="displayName"]').value.trim();
+      const headline = onboardingForm.querySelector('[name="headline"]').value.trim();
+      const category = onboardingForm.querySelector('[name="category"]').value;
+      const areas = onboardingForm.querySelector('[name="areas"]').value.split(',').map(s => s.trim()).filter(Boolean);
 
       try {
-        await API.saveProviderProfile(payload);
-      } catch (err) {
-        console.warn('API saveProviderProfile error, saved locally:', err);
-        localStorage.setItem('fixit_provider_profile', JSON.stringify(payload));
-      }
+        await Auth.becomeProvider(displayName);
+        
+        const payload = {
+          displayName,
+          headline,
+          primaryService: category,
+          tradeCategory: category,
+          location: areas[0] || 'Accra',
+          serviceAreas: areas,
+          verificationStatus: 'verified',
+        };
 
-      alert('🎉 Welcome to Fix-it as a Verified Provider! Taking you to your dashboard.');
-      window.location.href = '/provider/dashboard';
+        try {
+          await API.saveProviderProfile(payload);
+        } catch (err) {
+          console.warn('API saveProviderProfile error, saved locally:', err);
+        }
+        localStorage.setItem('fixit_provider_profile', JSON.stringify(payload));
+
+        alert('🎉 Welcome to Fix-it as a Verified Provider! Taking you to your dashboard.');
+        window.location.href = '/provider/dashboard';
+      } catch (err) {
+        console.error(err);
+        alert('Could not complete setup: ' + (err.message || 'Please try again.'));
+        submitBtn.innerHTML = origHtml;
+        submitBtn.disabled = false;
+      }
     });
   }
 

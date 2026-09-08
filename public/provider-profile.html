@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Provider Profile — Fix it</title>
+  <title>Provider Profile & Settings — Fix it</title>
   
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
   <link rel="stylesheet" href="/css/globals.css">
@@ -15,45 +15,65 @@
 
   <div id="main-header"></div>
 
-  <main class="dashboard-container" style="max-width: 720px;">
+  <main class="dashboard-container" style="max-width: 760px; padding: 3rem 1rem;">
     <div style="margin-bottom: 2rem;">
-      <h1 class="font-heading" style="font-size: 2rem; font-weight: 800; color: #222325;">Profile & Settings</h1>
-      <p style="color: #62646a; margin-top: 0.25rem;">Keep your public information, verified credentials, and bio up-to-date.</p>
+      <h1 class="font-heading" style="font-size: 2rem; font-weight: 800; color: #111827; letter-spacing: -0.02em;">Profile & Settings</h1>
+      <p style="color: #4b5563; margin-top: 0.35rem; font-size: 15px;">Keep your public information, verified credentials, and client bio up-to-date.</p>
     </div>
 
-    <div style="background: #fff; border: 1px solid #dadbdd; border-radius: 12px; padding: 2rem; box-shadow: var(--shadow-sm);">
+    <div style="background: #ffffff; border: 1px solid #e5e7eb; border-radius: 16px; padding: 2.25rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);">
       <form id="provider-profile-form" style="display: flex; flex-direction: column; gap: 1.25rem;">
-        <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;">
-          <img id="profile-preview-avatar" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80" style="width: 72px; height: 72px; border-radius: 50%; object-fit: cover;" />
+        
+        <!-- Avatar Header -->
+        <div style="display: flex; align-items: center; gap: 1.25rem; padding-bottom: 1.5rem; border-bottom: 1px solid #f3f4f6;">
+          <img id="profile-preview-avatar" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80" style="width: 80px; height: 80px; border-radius: 50%; object-fit: cover; border: 3px solid #e5e7eb;" />
           <div>
-            <span class="badge badge-verified">Verified Account</span>
-            <div style="font-size: 13px; color: #74767e; margin-top: 4px;">Photo shown on all your service cards</div>
+            <span class="badge badge-success" style="padding: 4px 10px; font-size: 11px;">
+              <i class="fa-solid fa-circle-check"></i> Verified Provider
+            </span>
+            <div style="font-size: 13px; color: #6b7280; margin-top: 6px;">
+              Profile picture synced with your account.
+            </div>
           </div>
         </div>
 
-        <div>
-          <label class="form-label">Full Name</label>
-          <input type="text" id="prof-name" class="form-input" value="Kofi Owusu" required />
+        <div class="form-group">
+          <label class="form-label" for="prof-name">Full Name or Business Name <span class="required-star">*</span></label>
+          <div class="input-with-icon">
+            <i class="fa-regular fa-user input-icon"></i>
+            <input type="text" id="prof-name" class="form-input" placeholder="e.g. Kofi Mensah" required />
+          </div>
         </div>
 
-        <div>
-          <label class="form-label">Professional Headline</label>
-          <input type="text" id="prof-headline" class="form-input" value="Certified Professional Cleaning Specialist" required />
+        <div class="form-group">
+          <label class="form-label" for="prof-headline">Professional Headline <span class="required-star">*</span></label>
+          <div class="input-with-icon">
+            <i class="fa-solid fa-briefcase input-icon"></i>
+            <input type="text" id="prof-headline" class="form-input" placeholder="e.g. Certified Electrician & Smart Home Wiring" required />
+          </div>
+          <div class="form-hint">Displayed under your name on service detail cards.</div>
         </div>
 
-        <div>
-          <label class="form-label">Bio & Overview</label>
-          <textarea id="prof-bio" class="form-input" rows="4">Dedicated, reliable, and punctual artisan serving Accra with over 7 years of hands-on experience and pristine quality standards.</textarea>
+        <div class="form-group">
+          <label class="form-label" for="prof-bio">Bio & Professional Experience</label>
+          <textarea id="prof-bio" class="form-input form-textarea" rows="4" placeholder="Tell customers about your skills, certifications, and years of experience..."></textarea>
         </div>
 
-        <div>
-          <label class="form-label">Operating Areas</label>
-          <input type="text" id="prof-areas" class="form-input" value="Accra Central, East Legon, Spintex, Osu, Cantonments" />
+        <div class="form-group">
+          <label class="form-label" for="prof-areas">Service Locations (comma-separated)</label>
+          <div class="input-with-icon">
+            <i class="fa-solid fa-location-dot input-icon"></i>
+            <input type="text" id="prof-areas" class="form-input" placeholder="e.g. Accra Central, East Legon, Spintex, Osu, Tema" />
+          </div>
+          <div class="form-hint">Areas where you can travel to accept bookings.</div>
         </div>
 
-        <button type="submit" class="btn btn-primary" style="align-self: flex-start; margin-top: 0.5rem;">
-          Save Profile Changes
-        </button>
+        <div style="margin-top: 0.5rem;">
+          <button type="submit" class="btn btn-primary btn-lg" id="btn-save-profile" style="height: 46px; font-weight: 700;">
+            <i class="fa-regular fa-floppy-disk" style="margin-right: 6px;"></i>
+            <span>Save Profile Changes</span>
+          </button>
+        </div>
       </form>
     </div>
   </main>
@@ -65,12 +85,55 @@
   <script src="/js/components.js"></script>
   <script src="/js/app.js"></script>
   <script>
-    document.addEventListener('DOMContentLoaded', () => {
+    document.addEventListener('DOMContentLoaded', async () => {
+      const user = Auth.getUser();
+      const nameInput = document.querySelector('#prof-name');
+      const headlineInput = document.querySelector('#prof-headline');
+      const bioInput = document.querySelector('#prof-bio');
+      const areasInput = document.querySelector('#prof-areas');
+      const avatarImg = document.querySelector('#profile-preview-avatar');
       const form = document.querySelector('#provider-profile-form');
+      const saveBtn = document.querySelector('#btn-save-profile');
+
+      // Pre-fill from active user or localStorage
+      if (user) {
+        if (nameInput && user.fullName) nameInput.value = user.fullName;
+        if (avatarImg && user.imageUrl) avatarImg.src = user.imageUrl;
+      }
+
+      const storedProfile = JSON.parse(localStorage.getItem('fixit_provider_profile') || '{}');
+      if (storedProfile.displayName && nameInput) nameInput.value = storedProfile.displayName;
+      if (storedProfile.headline && headlineInput) headlineInput.value = storedProfile.headline;
+      if (storedProfile.bio && bioInput) bioInput.value = storedProfile.bio;
+      if (storedProfile.serviceAreas && areasInput) areasInput.value = storedProfile.serviceAreas.join(', ');
+
       if (form) {
-        form.addEventListener('submit', (e) => {
+        form.addEventListener('submit', async (e) => {
           e.preventDefault();
-          alert('Profile settings saved successfully!');
+          const origHtml = saveBtn.innerHTML;
+          saveBtn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Saving...';
+          saveBtn.disabled = true;
+
+          const updated = {
+            displayName: nameInput.value.trim(),
+            headline: headlineInput.value.trim(),
+            bio: bioInput.value.trim(),
+            serviceAreas: areasInput.value.split(',').map(s => s.trim()).filter(Boolean)
+          };
+
+          try {
+            await API.saveProviderProfile(updated);
+          } catch (_) {}
+
+          localStorage.setItem('fixit_provider_profile', JSON.stringify(updated));
+          if (user) {
+            user.fullName = updated.displayName;
+            localStorage.setItem('fixit_local_user', JSON.stringify(user));
+          }
+
+          saveBtn.innerHTML = origHtml;
+          saveBtn.disabled = false;
+          alert('✅ Profile changes saved successfully!');
         });
       }
     });

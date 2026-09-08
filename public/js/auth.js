@@ -138,6 +138,30 @@ const Auth = {
     return this.user.role === 'provider' || localStorage.getItem('fixit_role') === 'provider' || this.isAdmin();
   },
 
+  async becomeProvider(displayName) {
+    if (this.user) {
+      this.user.role = 'provider';
+      if (displayName && (!this.user.fullName || this.user.fullName === 'User')) {
+        this.user.fullName = displayName;
+      }
+      localStorage.setItem('fixit_role', 'provider');
+      localStorage.setItem('fixit_local_user', JSON.stringify(this.user));
+      this.notifyListeners();
+    } else {
+      this.user = {
+        id: 'user_prov_' + Date.now(),
+        fullName: displayName || 'Professional Provider',
+        primaryEmail: '',
+        role: 'provider',
+        imageUrl: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80'
+      };
+      localStorage.setItem('fixit_role', 'provider');
+      localStorage.setItem('fixit_local_user', JSON.stringify(this.user));
+      this.notifyListeners();
+    }
+    return this.user;
+  },
+
   isAdmin() {
     if (!this.user) return false;
     const adminList = ['admin@fixit.gh', 'emmanuelopokunyame@gmail.com', 'kingsleydonkor44@gmail.com'];

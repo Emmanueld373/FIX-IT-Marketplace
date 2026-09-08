@@ -15,47 +15,114 @@
 
   <div id="main-header"></div>
 
-  <main class="auth-page">
-    <div class="auth-card" style="max-width: 540px;">
+  <main class="auth-page" style="padding: 3.5rem 1rem;">
+    <div class="auth-card" style="max-width: 560px; padding: 2.5rem 2rem; border-radius: 16px; box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.03);">
+      
+      <!-- Header -->
       <div style="text-align: center; margin-bottom: 2rem;">
-        <span class="badge badge-verified" style="margin-bottom: 8px;">Artisans & Professionals</span>
-        <h1 class="font-heading" style="font-size: 1.75rem; font-weight: 800; color: #222325;">Join as a Fix-it Pro</h1>
-        <p style="font-size: 14px; color: #62646a; margin-top: 6px;">Grow your client base and earn directly on Ghana's trusted home service marketplace.</p>
+        <span class="badge badge-success" style="margin-bottom: 12px; padding: 4px 12px; font-size: 12px; font-weight: 700; letter-spacing: 0.02em;">
+          <i class="fa-solid fa-shield-halved" style="margin-right: 5px;"></i> Artisans & Professionals
+        </span>
+        <h1 class="font-heading" style="font-size: 1.875rem; font-weight: 800; color: #111827; letter-spacing: -0.02em; margin-bottom: 0.5rem;">Join as a Fix-it Pro</h1>
+        <p style="font-size: 14.5px; color: #4b5563; line-height: 1.5; max-width: 440px; margin: 0 auto;">
+          Grow your client base, get booked online, and earn directly on Ghana's trusted home services platform.
+        </p>
       </div>
 
+      <!-- Registration Form -->
       <form id="provider-onboarding-form" style="display: flex; flex-direction: column; gap: 1.25rem;">
-        <div>
-          <label class="form-label">Full Name or Business Name</label>
-          <input type="text" name="displayName" placeholder="e.g. Kofi Mensah / CleanMasters GH" class="form-input" required />
+        
+        <div class="form-group">
+          <label class="form-label" for="onboarding-displayName">
+            Full Name or Business Brand <span class="required-star">*</span>
+          </label>
+          <div class="input-with-icon">
+            <i class="fa-regular fa-user input-icon"></i>
+            <input 
+              type="text" 
+              id="onboarding-displayName"
+              name="displayName" 
+              placeholder="e.g. Kofi Mensah / CleanMasters GH" 
+              class="form-input" 
+              required 
+              autocomplete="name"
+            />
+          </div>
+          <div class="form-hint">This name will be displayed publicly on your service listings.</div>
         </div>
 
-        <div>
-          <label class="form-label">Professional Headline</label>
-          <input type="text" name="headline" placeholder="e.g. Certified Electrician with 8+ Years Experience" class="form-input" required />
+        <div class="form-group">
+          <label class="form-label" for="onboarding-headline">
+            Professional Headline <span class="required-star">*</span>
+          </label>
+          <div class="input-with-icon">
+            <i class="fa-solid fa-briefcase input-icon"></i>
+            <input 
+              type="text" 
+              id="onboarding-headline"
+              name="headline" 
+              placeholder="e.g. Certified Electrician with 8+ Years Experience" 
+              class="form-input" 
+              required 
+            />
+          </div>
+          <div class="form-hint">A brief, compelling summary of your expertise.</div>
         </div>
 
-        <div>
-          <label class="form-label">Primary Trade / Specialty</label>
-          <select name="category" class="form-input" required>
-            <option value="cleaning">House & Commercial Cleaning</option>
-            <option value="plumbing">Plumbing & Pipe Fitting</option>
-            <option value="electrical">Electrical Wiring & Repairs</option>
-            <option value="painting">Painting & Decorating</option>
-            <option value="moving">Moving & Logistics</option>
-            <option value="assembly">Furniture Assembly</option>
-            <option value="gardening">Gardening & Landscaping</option>
-          </select>
+        <div class="form-group">
+          <label class="form-label" for="onboarding-category">
+            Primary Trade / Specialty <span class="required-star">*</span>
+          </label>
+          <div class="input-with-icon">
+            <i class="fa-solid fa-screwdriver-wrench input-icon"></i>
+            <select id="onboarding-category" name="category" class="form-input form-select" required>
+              <option value="house-cleaning">House & Commercial Cleaning</option>
+              <option value="plumbing">Plumbing & Pipe Repairs</option>
+              <option value="electrical-repairs">Electrical Wiring & Repairs</option>
+              <option value="painting-decorating">Painting & Wall Decorating</option>
+              <option value="moving-relocation">Moving & Logistics Relocation</option>
+              <option value="furniture-assembly">Flat-Pack Furniture Assembly</option>
+              <option value="gardening-landscaping">Gardening & Compound Care</option>
+              <option value="appliance-home-repairs">Appliance & General Home Repairs</option>
+            </select>
+          </div>
         </div>
 
-        <div>
-          <label class="form-label">Service Areas (comma-separated)</label>
-          <input type="text" name="areas" placeholder="e.g. East Legon, Osu, Spintex, Airport" class="form-input" required />
+        <div class="form-group">
+          <label class="form-label" for="onboarding-areas">
+            Service Coverage Areas <span class="required-star">*</span>
+          </label>
+          <div class="input-with-icon">
+            <i class="fa-solid fa-location-dot input-icon"></i>
+            <input 
+              type="text" 
+              id="onboarding-areas"
+              name="areas" 
+              placeholder="e.g. East Legon, Osu, Spintex, Airport, Cantonments" 
+              class="form-input" 
+              required 
+            />
+          </div>
+          <div class="form-hint">Separate locations with commas where you can travel to clients.</div>
         </div>
 
-        <button type="submit" class="btn btn-primary btn-lg" style="margin-top: 0.5rem; width: 100%;">
-          Complete Registration & Go to Dashboard
+        <div style="background: #f0fdf4; border: 1px solid #bbf7d0; border-radius: 8px; padding: 12px 14px; display: flex; gap: 10px; align-items: flex-start; margin-top: 0.25rem;">
+          <i class="fa-solid fa-circle-check" style="color: #008744; margin-top: 2px;"></i>
+          <span style="font-size: 12.5px; color: #166534; line-height: 1.45;">
+            By joining, you agree to uphold Fix-it quality standards and provide verified, courteous service to all clients.
+          </span>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-lg" id="btn-submit-onboarding" style="width: 100%; margin-top: 0.5rem; height: 48px; font-size: 15px; font-weight: 700;">
+          <span>Complete Registration & Go to Dashboard</span>
+          <i class="fa-solid fa-arrow-right" style="margin-left: 6px;"></i>
         </button>
       </form>
+
+      <div style="text-align: center; margin-top: 1.5rem; font-size: 13px; color: #6b7280;">
+        Already registered? <a href="/provider/dashboard" style="color: #008744; font-weight: 600; text-decoration: none;">View your dashboard</a>
+      </div>
+
     </div>
   </main>
 

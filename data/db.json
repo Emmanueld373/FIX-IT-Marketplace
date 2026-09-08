@@ -2,6 +2,22 @@
   "bookings": [],
   "messages": [],
   "reviews": [],
-  "providerProfiles": {},
+  "providerProfiles": {
+    "user_prov_demo456": {
+      "displayName": "Kofi Mensah Cleaners",
+      "headline": "Licensed Housekeeper & Cleaner",
+      "primaryService": "house-cleaning",
+      "tradeCategory": "house-cleaning",
+      "location": "East Legon",
+      "serviceAreas": [
+        "East Legon",
+        "Osu"
+      ],
+      "verificationStatus": "verified",
+      "id": "prov_1788904871675",
+      "clerkUserId": "user_prov_demo456",
+      "updatedAt": "2026-09-08T22:01:11.675Z"
+    }
+  },
   "providerServices": []
 }
