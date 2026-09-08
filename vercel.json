@@ -1,0 +1,18 @@
+{
+  "version": 2,
+  "rewrites": [
+    { "source": "/api/(.*)", "destination": "/api/index.js" },
+    { "source": "/services/(.*)", "destination": "/service.html" },
+    { "source": "/categories/(.*)", "destination": "/category.html" },
+    { "source": "/provider/dashboard", "destination": "/provider-dashboard.html" },
+    { "source": "/provider/onboarding", "destination": "/provider-onboarding.html" },
+    { "source": "/provider/profile", "destination": "/provider-profile.html" },
+    { "source": "/bookings", "destination": "/bookings.html" },
+    { "source": "/messages", "destination": "/messages.html" },
+    { "source": "/saved", "destination": "/saved.html" },
+    { "source": "/search", "destination": "/search.html" },
+    { "source": "/sign-in", "destination": "/sign-in.html" },
+    { "source": "/sign-up", "destination": "/sign-up.html" },
+    { "source": "/admin", "destination": "/admin.html" }
+  ]
+}

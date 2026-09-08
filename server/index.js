@@ -73,9 +73,13 @@ app.use((req, res) => {
   res.sendFile(path.join(publicDir, 'index.html'));
 });
 
-// Start server
-app.listen(PORT, '0.0.0.0', () => {
-  console.log(`\n  🔧 Fix-it Marketplace Server`);
-  console.log(`  ➜ Local:   http://localhost:${PORT}`);
-  console.log(`  ➜ API:     http://localhost:${PORT}/api\n`);
-});
+// Start server when running directly
+if (process.env.VERCEL !== '1') {
+  app.listen(PORT, '0.0.0.0', () => {
+    console.log(`\n  🔧 Fix-it Marketplace Server`);
+    console.log(`  ➜ Local:   http://localhost:${PORT}`);
+    console.log(`  ➜ API:     http://localhost:${PORT}/api\n`);
+  });
+}
+
+export default app;
